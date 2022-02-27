@@ -1,0 +1,111 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+{% if messages %}
+<div class="messages">
+    {% for message in messages %}
+    <div  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> 
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div> 
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+    <div class="index-container">
+        <div class="index-item index-item-1">
+            {% if listing.image %}
+                <img src="/media/{{ listing.image }}" class="img">
+            {% else %}
+            <img src="/media/images/default.jpg">
+            {% endif %}
+            
+        </div>
+        <div class="index-item index-item-2">
+            <div class="listing-up">
+                <h2>{{listing.title}}</h2>
+                {{listing.description}}
+                <br>
+                <br>
+                <strong>Category: </strong>{{listing.category}}
+            </div>
+
+            <div class="listing-down-left">
+                <br>
+                <br>
+                {% if user.is_authenticated %}
+                <div>
+                    <form action="{% url 'add_to_watchlist' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" id="custId" name="id" value="{{listing.id}}">
+                        <button type="submit" class="btn btn-primary btn-sm" >Add to Watchlist</button>
+                    </form>
+                    <br>        
+                </div>
+                {% endif %}
+                <div class="to-bottom">
+                    <h5>Listed on</h5>{{listing.date}} 
+                </div>                
+            </div>
+
+            <div class="listing-down-right">
+                <div class="to-bottom">
+                    {% if user.is_authenticated %}
+                    <h5>Make a new bid</h5>
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{bid_form.as_p}}
+                        <input type="submit" value="Place bidding" class="btn btn-primary btn-sm">
+                    </form>
+                    {% endif %}
+                </div>
+            </div>
+            
+            
+            
+            
+        </div>
+        <div class="index-item index-item-3">
+            <h5>Starting bid</h5>${{listing.starting_bid}}
+            <br>
+            <br>
+            {% if listing.current_bid != 0 %}
+            <h5>Current bid<h5>${{listing.current_bid}}
+            {% else %}
+            <h5>Current bid</h5>${{listing.starting_bid}}
+            {% endif %}  
+
+        </div>
+
+    </div>
+    
+    
+    <br>
+    <br>
+    
+    <h5>Comments:</h5>
+    
+    {% for comment in comments %}
+        <p>
+            {{comment.comment}}
+            <br>
+            <i>
+                {{comment.author}}
+                <br>
+                {{comment.date}}
+            </i>
+        </p>
+    {% endfor %}
+
+{% if user.is_authenticated %}
+<h5>Tell us what you think about this listing</h5>
+<form method="POST">
+    {% csrf_token %}
+    {{comment_form.as_p}}
+    <input type="submit" value="Comment" class="btn btn-primary btn-sm">
+</form>
+{% endif %}
+    
+
+{% endblock %}

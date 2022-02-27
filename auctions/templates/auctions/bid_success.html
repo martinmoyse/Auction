@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2 style="text-align: center;">You have successfully made a bid.</h2>
+    <br>
+    <div class="bid" style="width: 32%; margin:auto;">
+        <ul class="list-group">
+            <li class="list-group-item"><h5>Item</h5><a href="{{listing.pk}}">{{ listing.title }}</a></li>
+            <li class="list-group-item"><h5>Amount</h5>${{bid.amount|floatformat:2}}</li>
+            <li class="list-group-item"><h5>Made on</h5>{{ bid.time }}</li>
+            <li class="list-group-item"><h5>Bidder</h5>{{ bid.bidder }}</li>
+          </ul>
+    </div>
+     
+{% endblock %}

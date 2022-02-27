@@ -1,0 +1,42 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+    <div class="messages">
+        {% for message in messages %}
+        <div  {% if message.tags %} class=" {{ message.tags }} " {% endif %}> 
+            <div class="alert alert-info" role="alert">
+                {{ message }}
+            </div> 
+        </div>
+        {% endfor %}
+    </div>
+
+    <h4>Your watchlist currently has {{n}} items.</h4>
+    <br>
+    <ol>
+        {% for key, value in list %}
+
+            <div class="watchlist-item-container">
+                <li>
+                    <h5>
+                    <div class="watchlist-item-container-name"> 
+                        <a href="listings/{{value}}"></strong>{{ key }}&nbsp;</strong></a>
+                    </div>
+                    <div class="watchlist-item-container-remove">
+                        <form action="{% url 'remove_from_watchlist' %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" id="custId" name="id" value="{{value}}">
+                            <button type="submit" class="close" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </form>
+                    </div>
+                    </h5>
+                </li> 
+            </div>
+            
+        {% endfor %}
+    </ol>
+    
+{% endblock %}

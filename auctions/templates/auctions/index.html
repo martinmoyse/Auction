@@ -1,0 +1,43 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    
+    
+    
+    {% for listing in all_listings %}
+
+    
+        <div class="index-container">
+            <div class="index-item index-item-1">
+                {% if listing.image %}
+                <div class="img">
+                    <img src="/media/{{ listing.image }}" class="img">
+                </div>
+                {% else %}
+                <img src="/media/images/default.jpg">
+                {% endif %}
+            </div>
+            <div class="index-item index-item-2">
+                <h5><strong><a href="/listings/{{listing.pk}}">{{ listing.title }}</a></strong></h5>
+                <p>{{ listing.description }}</p>
+                <p>
+                    Current bid: 
+                    {% if listing.current_bid != 0 %} 
+                        <strong>${{listing.current_bid}}</strong>
+                    {% else %}
+                        <strong>${{listing.starting_bid}}</strong>
+                    {% endif %}
+                </p>
+                <p class="posted"><i>Posted {{ listing.date }}</i></p>
+                <br>
+            </div>
+            <div class="index-item index-item-3"></div>
+        </div>
+        <br>
+        <br>
+        <br>
+        
+    {% endfor %}
+
+    
+{% endblock %}
